@@ -18,3 +18,8 @@ app.listen(3000,()=>{
     console.log("listening on 3000")
 })
 
+app.use((err,req,res,next)=>{
+    const statuscode = err.statusCode ||500
+    const message = err.message || 'internal server error';
+    res.status(statuscode).json({ success:false,statuscode,message})
+})
