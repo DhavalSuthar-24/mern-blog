@@ -5,7 +5,7 @@ import { Link,useNavigate } from "react-router-dom"
 const Signup = () => {
 const [formdata,setFormData] = useState([]);
 const [Errormsg,setErrormsg] = useState(null)
-const [loading,serLoading] = useState(false)
+const [loading,setLoading] = useState(false)
  const navigate = useNavigate()
   const handleChange=(e)=>{
     setFormData({...formdata,[e.target.id]:e.target.value.trim()})
@@ -18,7 +18,7 @@ if(!formdata.username || !formdata.email |!formdata.password){
   return setErrormsg("please fill out all fields.")
 }
 try{
-  serLoading(true)
+  setLoading(true)
   setErrormsg(null)
   const res= await fetch("/api/auth/signup",{
     method:"POST",
@@ -30,15 +30,16 @@ try{
   const data=await res.json()
   if(data.success === false){
     return setErrormsg(data.message)
+  
   }
-  serLoading(false)
+  setLoading(false)
   if(res.ok){
     navigate("/sign-in")
   }
 
 }catch(e){
 setErrormsg(e.message)
-serLoading(false)
+setLoading(false)
 
 }
 
@@ -100,6 +101,7 @@ serLoading(false)
     <Alert className="mt-5" color='failure'>
       {
         Errormsg
+    
       }
     </Alert>
   )
