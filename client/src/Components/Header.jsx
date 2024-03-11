@@ -24,7 +24,7 @@ const Header = () => {
   </Button>
   <Link to="/signin">
     <Button color="grey" 
-   gradientDuoTone='purpleToBlue'>
+   gradientDuoTone='purpleToBlue' outline>
 Sign In
     </Button>
     
@@ -43,7 +43,7 @@ Sign In
     
   </Navbar.Link>
   <Navbar.Link active={path==="/projects"} as={'Div'}>
-    
+
   
     <Link to="/projects">Projects</Link>
     
