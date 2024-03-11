@@ -12,38 +12,39 @@ const [loading,setLoading] = useState(false)
     console.log(formdata)
   }
 
-  const handleSubmit= async(e)=>{
-e.preventDefault();
-if(!formdata.username || !formdata.email |!formdata.password){
-  return setErrormsg("please fill out all fields.")
-}
-try{
-  setLoading(true)
-  setErrormsg(null)
-  const res= await fetch("/api/auth/signup",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify(formdata)
-  })
-  const data=await res.json()
-  if(data.success === false){
-    return setErrormsg(data.message)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
   
-  }
-  setLoading(false)
-  if(res.ok){
-    navigate("/sign-in")
-  }
-
-}catch(e){
-setErrormsg(e.message)
-setLoading(false)
-
-}
-
-  }
+    if (!formdata.username || !formdata.email || !formdata.password) {
+      return setErrormsg("Please fill out all fields.");
+    }
+  
+    try {
+      setLoading(true);
+      setErrormsg(null);
+  
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formdata),
+      });
+  
+      const data = await res.json();
+  
+      if (data.success === false) {
+        setErrormsg(data.message);
+      } else {
+        navigate("/sign-in");
+      }
+    } catch (e) {
+      setErrormsg(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   return (
 

@@ -3,12 +3,13 @@ import { BrowserRouter,Route,Routes } from 'react-router-dom'
 import Home from './pages/Home'
 // import Home from './pages/Home';
 import About from './pages/About';
+
 import Signin from './pages/Signin';
 import Dashboard from './pages/Dashboard';
 import Projects from './pages/Projects';
 import Signup from './pages/Signup';
 // import Header from './components/Header';
-// import Footer from './components/Footer';
+import Footer from './Components/Footer';
 // import PrivateRoute from './components/PrivateRoute';
 // import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute';
 // import CreatePost from './pages/CreatePost';
@@ -40,7 +41,7 @@ const App = () => {
 
    
    </Routes>
-    
+   <Footer />
     </BrowserRouter>
   )
 }
