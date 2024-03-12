@@ -18,6 +18,7 @@ import Footer from './Components/Footer';
 // import ScrollToTop from './components/ScrollToTop';
 import Search from './pages/Search';
 import Header from './Components/Header';
+import PrivateRoute from './Components/PrivateRoute';
 const App = () => {
   return (
     <BrowserRouter >
@@ -28,8 +29,11 @@ const App = () => {
         <Route path='/sign-in' element={<Signin />} />
         <Route path='/sign-up' element={<Signup />} />
         <Route path='/search' element={<Search />} />
+        <Route element={<PrivateRoute/>}>
+        <Route path='/dashboard' element={<Dashboard />} />
+        </Route>
         {/* <Route element={<PrivateRoute />}> */}
-          <Route path='/dashboard' element={<Dashboard />} />
+         
         {/* </Route> */}
         {/* <Route element={<OnlyAdminPrivateRoute />}> */}
           {/* <Route path='/create-post' element={<CreatePost />} /> */}
