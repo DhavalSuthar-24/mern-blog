@@ -1,20 +1,23 @@
-import { Button, TextInput, Alert } from "flowbite-react";
+import { Button, TextInput, Alert,Modal, ModalHeader } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux"; // Fixed import
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { app } from "../firebase";
-import { updateStart,updateFailure, updateSuccess} from '../redux/user/user.slice';
+import { updateStart,updateFailure, updateSuccess,deleteUserFailure,deleteUserStart,deleteUserSuccess} from '../redux/user/user.slice';
+import { HiOutlineExclamationCircle } from "react-icons/hi";
+
 
 const Dashprofile = () => {
-    const { currentUser } = useSelector((state) => state.user);
+    const { currentUser,error } = useSelector((state) => state.user);
     const [imageFile, setImageFile] = useState(null);
     const [imageFileUrl, setImageFileUrl] = useState(null);
     const [imageUploadProgress, setImageUploadProgress] = useState(0);
     const [imageFileUploadError, setImageFileUploadError] = useState(null);
     const [formdata, setFormData] = useState({}); // Fixed variable name and added missing import
     const [imagefileUploading,setimagefileUploading]= useState(null)
+    const [showmodel,setshowmodel] = useState(false)
     const dispatch = useDispatch(); // Fixed typo in useDispatch
     const [updateUserSuccess,setupdateUserSuccess]= useState(null)
     const [updateUsererror,setupdateUsererror] = useState(null)
@@ -102,6 +105,29 @@ setimagefileUploading(true)
         }
         console.log(currentUser.profilepic)
       };
+      const handleDeleteUser =async()=>{
+setshowmodel(false);
+try{
+    dispatch(deleteUserStart());
+    const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      dispatch(deleteUserFailure(data.message));
+   
+    } else {
+      dispatch(deleteUserSuccess(data));
+     
+    }
+  }catch(error){
+dispatch(updateFailure(error.messsage))
+}
+
+      }
     
 
     return (
@@ -147,7 +173,7 @@ setimagefileUploading(true)
                 <Button gradientDuoTone="purpleToBlue" type="submit" outline>Update</Button>
             </form>
             <div className="text-red-500 flex justify-between mt-5">
-                <span className="cursor-pointer">Delete Account</span>
+                <span className="cursor-pointer" onClick={()=>setshowmodel(true)}>Delete Account</span>
                 <span className="cursor-pointer">Sign out</span>
             </div>
             {
@@ -160,6 +186,26 @@ setimagefileUploading(true)
                     <Alert color='failure' className="mt-5">{updateUsererror}</Alert>
                 )
             }
+            {
+                error && (
+                    <Alert color='failure' className="mt-5">{error}</Alert>
+                )
+            }
+            <Modal  show={showmodel} onClose={()=>setshowmodel(false)}  popup size="md">
+                <Modal.Header/>
+                <Modal.Body>
+                    <div className="text-center">
+                        <HiOutlineExclamationCircle className="h-14 w-14 color-gray-400 dark:color-gray-200 mb-4 mx-auto"/>
+                        <h3 className=" text-lg text-grey-500 dark:text-gray-400 font-semibold">Are you sure you want to delete your account?</h3>
+                        <div className="flex justify-center gap-4">
+                            <Button color="failure" onClick={handleDeleteUser}>Yes I'm Sure
+
+                            </Button>
+                            <Button color="grey" onClick={()=>setshowmodel(false)}>No, Cancel</Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };

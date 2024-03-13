@@ -3,7 +3,9 @@ import User from '../models/user.model.js';
 import { errorHandler } from '../utils/error.js';
 
 export const updateUser = async (req, res, next) => {
-    if (req.user.id !== req.params.userId) {
+    console.log(req.user._id,req.params.userId)
+    if (req.user._id !== req.params.userId) {
+      
       return next(errorHandler(403, 'You are not allowed to update this user'));
     }
     if (req.body.password) {
