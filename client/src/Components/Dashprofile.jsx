@@ -5,7 +5,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { app } from "../firebase";
-import { updateStart,updateFailure, updateSuccess,deleteUserFailure,deleteUserStart,deleteUserSuccess} from '../redux/user/user.slice';
+import { updateStart,updateFailure, signOutSuccess,updateSuccess,deleteUserFailure,deleteUserStart,deleteUserSuccess} from '../redux/user/user.slice';
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 
@@ -105,7 +105,7 @@ setimagefileUploading(true)
         }
         console.log(currentUser.profilepic)
       };
-      const handleDeleteUser =async()=>{
+       const handleDeleteUser =async()=>{
 setshowmodel(false);
 try{
     dispatch(deleteUserStart());
@@ -126,6 +126,27 @@ try{
   }catch(error){
 dispatch(updateFailure(error.messsage))
 }
+}
+const handleSignout = async()=>{
+    try{
+          const res = await fetch('/api/user/signOut',{
+            method:'POST'}
+
+          )
+          const data = await res.json();
+
+         if(!res.ok){
+            console.log(data.message)
+         }else{
+            dispatch(signOutSuccess())
+         }
+
+         }
+
+    catch(e){
+        console.log(e.message)
+    }
+
 
       }
     
@@ -174,7 +195,7 @@ dispatch(updateFailure(error.messsage))
             </form>
             <div className="text-red-500 flex justify-between mt-5">
                 <span className="cursor-pointer" onClick={()=>setshowmodel(true)}>Delete Account</span>
-                <span className="cursor-pointer">Sign out</span>
+                <span onClick={handleSignout} className="cursor-pointer" >Sign out</span>
             </div>
             {
                 updateUserSuccess && (
