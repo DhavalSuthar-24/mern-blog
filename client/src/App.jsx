@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { BrowserRouter,Route,Routes } from 'react-router-dom'
 import Home from './pages/Home'
 // import Home from './pages/Home';
@@ -12,13 +12,15 @@ import Signup from './pages/Signup';
 import Footer from './Components/Footer';
 // import PrivateRoute from './components/PrivateRoute';
 // import OnlyAdminPrivateRoute from './components/OnlyAdminPrivateRoute';
-// import CreatePost from './pages/CreatePost';
+import CreatePost from './pages/CreatePost';
 // import UpdatePost from './pages/UpdatePost';
 // import PostPage from './pages/PostPage';
 // import ScrollToTop from './components/ScrollToTop';
 import Search from './pages/Search';
 import Header from './Components/Header';
 import PrivateRoute from './Components/PrivateRoute';
+import OnlyAdminPrivateRoute from './Components/OnlyAdminPrivateRoute';
+
 const App = () => {
   return (
     <BrowserRouter >
@@ -31,14 +33,11 @@ const App = () => {
         <Route path='/search' element={<Search />} />
         <Route element={<PrivateRoute/>}>
         <Route path='/dashboard' element={<Dashboard />} />
-        </Route>
-        {/* <Route element={<PrivateRoute />}> */}
-         
-        {/* </Route> */}
-        {/* <Route element={<OnlyAdminPrivateRoute />}> */}
-          {/* <Route path='/create-post' element={<CreatePost />} /> */}
+   </Route>
+        <Route element={<OnlyAdminPrivateRoute />}>
+          <Route path='/create-post' element={<CreatePost />} />
           {/* <Route path='/update-post/:postId' element={<UpdatePost />} /> */}
-        {/* </Route> */}
+        </Route>
 
         <Route path='/projects' element={<Projects />} />
         {/* <Route path='/post/:postSlug' element={<PostPage />} /> */}
