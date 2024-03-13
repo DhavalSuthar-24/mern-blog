@@ -5,7 +5,7 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { app } from "../firebase";
-import { updateStart,updateFailure } from '../redux/user/user.slice.js';
+import { updateStart,updateFailure, updateSuccess} from '../redux/user/user.slice';
 
 const Dashprofile = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -14,9 +14,10 @@ const Dashprofile = () => {
     const [imageUploadProgress, setImageUploadProgress] = useState(0);
     const [imageFileUploadError, setImageFileUploadError] = useState(null);
     const [formdata, setFormData] = useState({}); // Fixed variable name and added missing import
-
+    const [imagefileUploading,setimagefileUploading]= useState(null)
     const dispatch = useDispatch(); // Fixed typo in useDispatch
-
+    const [updateUserSuccess,setupdateUserSuccess]= useState(null)
+    const [updateUsererror,setupdateUsererror] = useState(null)
     const filePickerRef = useRef();
 
     const handleImageChange = (e) => {
@@ -34,7 +35,7 @@ const Dashprofile = () => {
     const uploadImage = async () => {
         setImageFileUploadError(null);
         if (!imageFile) return;
-
+setimagefileUploading(true)
         const storage = getStorage(app);
         const fileName = new Date().getTime() + imageFile.name;
         const storageRef = ref(storage, fileName);
@@ -50,10 +51,12 @@ const Dashprofile = () => {
             setImageUploadProgress(null);
             setImageFile(null);
             setImageFileUrl(null);
+            setimagefileUploading(false)
         }, () => {
             getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
                 setImageFileUrl(downloadUrl);
                 setFormData({ ...formdata, profilepic: downloadUrl }); // Fixed variable name
+                 setimagefileUploading(false)
             });
         });
     };
@@ -64,28 +67,42 @@ const Dashprofile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setupdateUsererror(null)
+        setupdateUserSuccess(null)
+   if(imagefileUploading){
+
+    setupdateUsererror("please wait to image to be saved")
+    return;  
+}
         if (Object.keys(formdata).length === 0) {
-            return;
+       setupdateUsererror('no changes made')
+          return;
         }
+        console.log(currentUser._id)
         try {
-            await fetch(`/api/user/update/${currentUser._id}`, {
-                method: 'PUT',
-                body: JSON.stringify(formdata), // Fixed missing body in the fetch request
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await res.json()
-            if(res.ok){
-                dispatch(updateStart(data));
-            }else{
-                dispatch(updateFailure(data.message))
-            }
-            dispatch(updateStart(formdata));
+          dispatch(updateStart());
+          const res = await fetch(`/api/user/update/${currentUser._id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formdata),
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            dispatch(updateFailure(data.message));
+          setupdateUsererror(data.message)
+          } else {
+            dispatch(updateSuccess(data));
+          setupdateUserSuccess("user profile updated succesfully")
+          }
         } catch (error) {
-            console.error('Error updating user:', error);
+          dispatch(updateFailure(error.message));
+       
         }
-    };
+        console.log(currentUser.profilepic)
+      };
+    
 
     return (
         <div className="max-w-lg mx-auto p-3 w-full">
@@ -133,6 +150,16 @@ const Dashprofile = () => {
                 <span className="cursor-pointer">Delete Account</span>
                 <span className="cursor-pointer">Sign out</span>
             </div>
+            {
+                updateUserSuccess && (
+                    <Alert color='success' className="mt-5">{updateUserSuccess}</Alert>
+                )
+            }
+            {
+                updateUsererror && (
+                    <Alert color='failure' className="mt-5">{updateUsererror}</Alert>
+                )
+            }
         </div>
     );
 };

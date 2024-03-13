@@ -49,7 +49,7 @@ const userSlice = createSlice(
 )
 
 
-export const { signInFailure,signInStart,signInSuccess } = userSlice.actions
+export const { signInFailure,signInStart,signInSuccess ,updateFailure,updateStart,updateSuccess} = userSlice.actions
 
 
 export default userSlice.reducer
