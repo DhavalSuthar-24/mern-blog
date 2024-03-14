@@ -20,10 +20,12 @@ import Search from './pages/Search';
 import Header from './Components/Header';
 import PrivateRoute from './Components/PrivateRoute';
 import OnlyAdminPrivateRoute from './Components/OnlyAdminPrivateRoute';
+import ScrollToTop from './Components/ScrollToTop';
 
 const App = () => {
   return (
     <BrowserRouter >
+    <ScrollToTop/>
    <Header/>
    <Routes>
     <Route path='/' element={<Home/>}/>
