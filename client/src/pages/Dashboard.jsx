@@ -5,6 +5,7 @@ import Dashprofile from "../Components/Dashprofile";
 import DashPost from "../Components/DashPost";
 import DashUsers from "../Components/DashUsers";
 import DashComments from "../Components/DashComments";
+import DashboardComp from "../Components/DashboardComp";
 const Dashboard = () => {
   const location = useLocation();
 const[tab,settab] =useState('')
@@ -36,7 +37,9 @@ if(tabFromUrl){
 {
   tab === 'comments' && <DashComments/>
 }
-
+{
+  tab === 'dash' && <DashboardComp/>
+}
     </div>
   )
 }
