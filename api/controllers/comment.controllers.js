@@ -101,28 +101,38 @@ export const likeComment = async (req, res, next) => {
   };
   
   export const getcomments = async (req, res, next) => {
-    if (!req.user.isAdmin)
-      return next(errorHandler(403, 'You are not allowed to get all comments'));
+   
     try {
+        console.log(req.user)
+      // Check if the user is an admin
+      if ( !req.user.isAdmin) {
+        // If not an admin, return a 403 Forbidden error
+        return res.status(403).json({ error: 'You are not allowed to get all comments' });
+      }
+  
+      // Parse query parameters for pagination and sorting
       const startIndex = parseInt(req.query.startIndex) || 0;
       const limit = parseInt(req.query.limit) || 9;
       const sortDirection = req.query.sort === 'desc' ? -1 : 1;
+  
+      // Query the database for comments, applying pagination and sorting
       const comments = await Comment.find()
         .sort({ createdAt: sortDirection })
         .skip(startIndex)
         .limit(limit);
+  
+      // Count the total number of comments
       const totalComments = await Comment.countDocuments();
+  
+      // Calculate the number of comments from the last month
       const now = new Date();
-      const oneMonthAgo = new Date(
-        now.getFullYear(),
-        now.getMonth() - 1,
-        now.getDate()
-      );
-      const lastMonthComments = await Comment.countDocuments({
-        createdAt: { $gte: oneMonthAgo },
-      });
+      const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+      const lastMonthComments = await Comment.countDocuments({ createdAt: { $gte: oneMonthAgo } });
+  
+      // Send the response with comments, totalComments, and lastMonthComments
       res.status(200).json({ comments, totalComments, lastMonthComments });
     } catch (error) {
+      // If an error occurs, pass it to the error handling middleware
       next(error);
     }
   };

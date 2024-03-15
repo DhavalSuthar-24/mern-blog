@@ -1,5 +1,5 @@
 import { Sidebar } from "flowbite-react"
-import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup } from 'react-icons/hi';
+import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiAnnotation } from 'react-icons/hi';
 import { Link, useLocation } from "react-router-dom";
 import { useState,useEffect } from "react";
 import { signOutSuccess } from "../redux/user/user.slice";
@@ -51,7 +51,7 @@ function DashSidebar() {
                     {
                       currentUser.isAdmin &&(
                          <Link to='/dashboard/?tab=posts'>
-                    <Sidebar.Item active={tab==="posts"} icon={ HiDocumentText} label={"posts"} labelColor="dark" as='div'  as='div'>
+                    <Sidebar.Item active={tab==="posts"} icon={ HiDocumentText}  labelColor="dark" as='div'  as='div'>
                     Posts
                     </Sidebar.Item></Link>
                       )
@@ -59,16 +59,21 @@ function DashSidebar() {
                     {
                       currentUser.isAdmin &&(
                          <Link to='/dashboard/?tab=users'>
-                    <Sidebar.Item active={tab==="posts"} icon={HiOutlineUserGroup } label={"posts"} labelColor="dark" as='div'  as='div'>
+                    <Sidebar.Item active={tab==="posts"} icon={HiOutlineUserGroup }  labelColor="dark" as='div'  as='div'>
                     Users
                     </Sidebar.Item></Link>
                       )
                     }
+                    {
+                      currentUser.isAdmin &&(
+                         <Link to='/dashboard/?tab=comments'>
+                           <Sidebar.Item active={tab==="comments"} icon={HiAnnotation}  labelColor="dark" as='div'  as='div'>Comments</Sidebar.Item>
+                  </Link> ) }
                    
                     <Sidebar.Item onClick={handleSignout} className="cursor-pointer"  icon={ HiArrowSmRight}   >
                     Sign out
                     </Sidebar.Item>
-
+                       
             </Sidebar.ItemGroup>
         </Sidebar.Items>
     </Sidebar>
