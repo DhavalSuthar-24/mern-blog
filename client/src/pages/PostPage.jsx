@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import CallToAction from '../Components/CallToAction';
 import CommentSection from '../Components/CommentSection';
-// import PostCard from '../components/PostCard';
+import PostCard from '../Components/PostCard';
 
 export default function PostPage() {
   const { postSlug } = useParams();
@@ -93,8 +93,8 @@ export default function PostPage() {
       <div className='flex flex-col justify-center items-center mb-5'>
         <h1 className='text-xl mt-5'>Recent articles</h1>
         <div className='flex flex-wrap gap-5 mt-5 justify-center'>
-          {/* {recentPosts &&
-            recentPosts.map((post) => <PostCard key={post._id} post={post} />)} */}
+          {recentPosts &&
+            recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
         </div> 
        </div>
     </main>
