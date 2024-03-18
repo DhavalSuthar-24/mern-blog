@@ -1,5 +1,8 @@
 import { errorHandler } from "../utils/error.js"
 import { Post } from "../models/post.model.js"
+
+
+
 export const createPost = async(req,res,next)=>{
  console.log(req.user._id)
     if(!req.user.isAdmin){

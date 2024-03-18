@@ -19,8 +19,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Static files
-const __staticDirname = path.resolve();
-app.use(express.static(path.join(__staticDirname, '/client/dist')));
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '/client/dist')));
 
 // Routes
 app.use("/api/auth", authRoute);
@@ -37,8 +37,9 @@ app.use((err, req, res, next) => {
 
 // Serve index.html for all other routes
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__staticDirname, '/client/dist/index.html'));
-});
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+  });
+  
 
 // Database connection
 mongoose.connect(process.env.MONGO).then(() => {
