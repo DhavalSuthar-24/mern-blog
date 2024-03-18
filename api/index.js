@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser"
 import userRoute from './routes/user.route.js'
 import postRoute from './routes/post.route.js'
 import commentRoute from './routes/comment.route.js'
+import path from 'path'
 dotenv.config()
 
 mongoose.connect(process.env.MONGO).then(()=>{
@@ -23,9 +24,19 @@ app.use("/api/user",userRoute)
 app.use("/api/post",postRoute)
 app.use("/api/comment",commentRoute)
 app.use(cors());
+const __dirname  = path.resolve();
+app.use(
+    express.static(path.join(__dirname,'/client/dist'))
+
+)
+app.get('*',
+    (req,res)=>{
+        res.sendFile(path.join(__dirname,'/client/dist/index.html'))
+    })
 app.listen(3000,()=>{
     console.log("listening on 3000")
 })
+
 
 app.use((err,req,res,next)=>{
     const statuscode = err.statusCode ||500
