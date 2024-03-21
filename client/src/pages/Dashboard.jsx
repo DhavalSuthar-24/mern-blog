@@ -6,6 +6,7 @@ import DashPost from "../Components/DashPost";
 import DashUsers from "../Components/DashUsers";
 import DashComments from "../Components/DashComments";
 import DashboardComp from "../Components/DashboardComp";
+import CouponGenerator from "../Components/CouponGenerator";
 const Dashboard = () => {
   const location = useLocation();
 const[tab,settab] =useState('')
@@ -39,6 +40,9 @@ if(tabFromUrl){
 }
 {
   tab === 'dash' && <DashboardComp/>
+}
+{
+  tab==='coupon' && <CouponGenerator/>
 }
     </div>
   )

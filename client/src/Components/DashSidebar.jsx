@@ -75,6 +75,11 @@ function DashSidebar() {
                          <Link to='/dashboard/?tab=dash'>
                            <Sidebar.Item active={tab==="dash"} icon={LuFileBarChart}  labelColor="dark" as='div'  as='div'>Dashboard</Sidebar.Item>
                   </Link> ) }
+                  {
+                      currentUser.isAdmin &&(
+                         <Link to='/dashboard/?tab=coupon'>
+                           <Sidebar.Item active={tab==="coupon"} icon={LuFileBarChart}  labelColor="dark" as='div'  as='div'>Coupon</Sidebar.Item>
+                  </Link> ) }
                    
                     <Sidebar.Item onClick={handleSignout} className="cursor-pointer"  icon={ HiArrowSmRight}   >
                     Sign out
