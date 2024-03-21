@@ -1,10 +1,11 @@
 import { Sidebar } from "flowbite-react"
-import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiAnnotation } from 'react-icons/hi';
+import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiAnnotation, HiDocumentSearch } from 'react-icons/hi';
 import { Link, useLocation } from "react-router-dom";
 import { useState,useEffect } from "react";
 import { signOutSuccess } from "../redux/user/user.slice";
 import {  useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { LuFileBarChart } from "react-icons/lu";
 function DashSidebar() {
     const location = useLocation();
     const {currentUser} = useSelector((state)=>state.user)
@@ -68,6 +69,11 @@ function DashSidebar() {
                       currentUser.isAdmin &&(
                          <Link to='/dashboard/?tab=comments'>
                            <Sidebar.Item active={tab==="comments"} icon={HiAnnotation}  labelColor="dark" as='div'  as='div'>Comments</Sidebar.Item>
+                  </Link> ) }
+                  {
+                      currentUser.isAdmin &&(
+                         <Link to='/dashboard/?tab=dash'>
+                           <Sidebar.Item active={tab==="dash"} icon={LuFileBarChart}  labelColor="dark" as='div'  as='div'>Dashboard</Sidebar.Item>
                   </Link> ) }
                    
                     <Sidebar.Item onClick={handleSignout} className="cursor-pointer"  icon={ HiArrowSmRight}   >

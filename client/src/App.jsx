@@ -21,6 +21,8 @@ import Header from './Components/Header';
 import PrivateRoute from './Components/PrivateRoute';
 import OnlyAdminPrivateRoute from './Components/OnlyAdminPrivateRoute';
 import ScrollToTop from './Components/ScrollToTop';
+import AddProduct from './pages/AddProduct';
+import Cart from './Components/Cart';
 
 const App = () => {
   return (
@@ -39,10 +41,12 @@ const App = () => {
         <Route element={<OnlyAdminPrivateRoute />}>
           <Route path='/create-post' element={<CreatePost />} />
           <Route path='/update-post/:postId' element={<UpdatePost />} />
+          <Route path='/add-product' element={<AddProduct />} />
         </Route>
 
-        <Route path='/projects' element={<Projects />} />
+        <Route path='/e-store' element={<Projects />} />
         <Route path='/post/:postSlug' element={<PostPage />} />
+        <Route path='/cart' element={<Cart />} />
 
    
    </Routes>

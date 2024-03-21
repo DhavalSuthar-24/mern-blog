@@ -12,7 +12,7 @@ export const verifyUser = (req, res, next) => {
     }
 
     // Verify the JWT token
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    jwt.verify(token, process.env.JWT_SECRET||'leo7', (err, user) => {
         // If there's an error while verifying the token
         if (err) {
             // Return a 401 Unauthorized error

@@ -202,6 +202,13 @@ const handleSignout = async()=>{
                    
                 )
             }
+             {
+                currentUser.isAdmin && (
+                    <Link to={'/add-product'}> 
+                    <Button gradientDuoTone="purpleToBlue" className="w-full"  >Add Product </Button></Link>
+                   
+                )
+            }
             </form>
             <div className="text-red-500 flex justify-between mt-5">
                 <span className="cursor-pointer" onClick={()=>setshowmodel(true)}>Delete Account</span>

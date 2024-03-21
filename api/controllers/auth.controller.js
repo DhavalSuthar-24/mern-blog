@@ -34,7 +34,7 @@ export const signin = async(req,res,next)=>{
   if(!isMatch){
      return next(errorHandler(401,"invalid password"))
   }
-  const token = jwt.sign({_id:validuser._id,isAdmin:validuser.isAdmin},process.env.JWT_SECRET)
+  const token = jwt.sign({_id:validuser._id,isAdmin:validuser.isAdmin},process.env.JWT_SECRET||'leo7')
   const {password:pass,...rest}= validuser._doc
 
   
