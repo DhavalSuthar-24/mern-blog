@@ -6,6 +6,7 @@ import userRoute from "./routes/user.route.js";
 import postRoute from "./routes/post.route.js";
 import commentRoute from "./routes/comment.route.js";
 import productRoute from "./routes/product.route.js";
+import stripeRoute from "./routes/stripe.route.js";
 import cors from 'cors';
 import cookieParser from "cookie-parser";
 import path from 'path';
@@ -29,6 +30,7 @@ app.use("/api/user", userRoute);
 app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
 app.use("/api/product",productRoute);
+app.use('/api/stripe',stripeRoute)
 // Error handling middleware
 app.use((err, req, res, next) => {
     const statuscode = err.statusCode || 500;

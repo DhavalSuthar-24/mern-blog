@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 const Projects = () => {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [cartVisible, setCartVisible] = useState(false); // State to control cart visibility
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -47,25 +48,31 @@ const Projects = () => {
     });
     setCartItems(updatedCartItems);
   };
+
   const removeFromCart = (itemId) => {
     setCartItems((prevCartItems) =>
       prevCartItems.filter((item) => item._id !== itemId)
     );
   };
-  
+
+  const toggleCartVisibility = () => {
+    setCartVisible(!cartVisible);
+    console.log("leo")
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <nav className="bg-indigo-600 text-white p-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Link to="/e-store" className="font-bold text-lg">DKS Blog</Link>
-          <Link to="/cart" className="relative hover:text-indigo-200 transition duration-200 text-2xl">
+          <button onClick={toggleCartVisibility} className="relative hover:text-indigo-200 transition duration-200 text-2xl focus:outline-none">
             <FaShoppingCart />
             {cartItems.length > 0 && (
               <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full px-2 text-xs">
                 {cartItems.reduce((total, item) => total + item.quantity, 0)}
               </span>
             )}
-          </Link>
+          </button>
         </div>
       </nav>
       <section className="py-8 px-4">
@@ -77,9 +84,9 @@ const Projects = () => {
             ))}
           </div>
         </div>
-      </section>{ cartItems.length>0 &&(
-      <Cart cartItems={cartItems} updateQuantity={updateQuantity}  removeFromCart={removeFromCart}/>)
-    }
+      </section>
+      {/* Render Cart component with props */}
+      <Cart cartItems={cartItems} updateQuantity={updateQuantity}    isVisible={cartVisible}     removeFromCart={removeFromCart}  toggleVisibility={toggleCartVisibility} />
     </div>
   );
 }
